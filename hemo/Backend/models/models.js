@@ -77,4 +77,4 @@ const eventSchema = new mongoose.Schema({
     }]
 });
 
-// create model for events
+
