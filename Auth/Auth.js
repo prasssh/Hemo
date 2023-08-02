@@ -19,11 +19,8 @@ const Auth = (props) => {
     const [age, setAge] = useState(0);
     const [gender, setGender] = useState("male");
     const [mail, setMail] = useState("");
-    const [bankmail, setBankMail] = useState("");
     const [password, setPassword] = useState("");
     const [phone, setPhone] = useState("");
-    const [state, setState] = useState(0);
-    const [district, setDistrict] = useState(0);
     const [address, setAddress] = useState("");
     const [blood, setBlood] = useState(0);
     const [auth, setAuth] = useState(0);
@@ -129,7 +126,7 @@ const Auth = (props) => {
                         action=""
                         onSubmit={auth === 0 ? signUp : logIn}
                     >
-                        <fieldset className="border border-solid border-gray-300 px-12 py-5">
+                        < className= "border border-solid border-gray-300 px-12 py-5">
                             <legend className={`text-2xl font-bold mb-1 ${auth === 1 && "text-center"}`}>
                                 &nbsp;{handle === "bank" ? (auth === 1 ? "Blood Bank Log In" : "Add Your Bloodbank") : (handle === "donor" ? "Donor" : "Patient")} {handle !== "bank" && (auth === 0 ? "Sign Up" : "Log In")}&nbsp;
                             </legend>
@@ -153,48 +150,13 @@ const Auth = (props) => {
                                             required
                                             onChange={(e) => setName(e.target.value)}
                                         /></div>
-                                    {
-                                        handle === "bank" ?
-                                            <>
-                                                <div><label className="font-semibold leading-8">Parent Hospital Name:<font color="red">*</font></label>
-                                                    <input
-                                                        className="w-full p-3 text-md border border-silver rounded"
-                                                        type="text"
-                                                        required
-                                                        onChange={(e) => setHospital(e.target.value)} ś
-                                                    /></div>
-                                                <div>
-                                                    <label className="font-semibold  leading-8">Contact Person:</label>
-                                                    <input
-                                                        className="w-full p-3 text-md border border-silver rounded"
-                                                        type="text"
-                                                        onChange={(e) => setContactPerson(e.target.value)}
-                                                    /></div>
-                                                <div><label for="category" className="font-semibold  leading-8">Category:<font color="red">*</font></label>
-                                                    <select name="category" id="category" onChange={(e) => setCategory(e.target.value)} className="w-full p-3 text-md border border-silver rounded" >
-                                                        <option value="Private">Private</option>
-                                                        <option value="Govt.">Govt.</option>
-                                                        <option value="Red Cross">Red Cross</option>
-                                                    </select></div>
-                                                <div>
-                                                    <label className="font-semibold  leading-8">Website:</label>
-                                                    <input
-                                                        className="w-full p-3 text-md border border-silver rounded"
-                                                        type="text"
-                                                        onChange={(e) => setWebsite(e.target.value)}
-                                                    />
-                                                </div>
-                                            </> : <></>
-                                    }
-                                    {
-                                        handle !== "bank" && <><div><label className="font-semibold  leading-8">Age:<font color="red">*</font></label>
-                                            <input
-                                                className="w-full p-3 text-md border border-silver rounded"
-                                                type="number"
-                                                placeholder="Enter your age"
-                                                required
-                                                onChange={(e) => setAge(e.target.value)}
-                                            /></div>
+                                    
+                                                
+                                                  
+                                          
+                                    
+                                    
+                                            </div>
                                             <div><label for="gender" className="font-semibold  leading-8">Gender:<font color="red">*</font></label>
                                                 <select name="gender" id="gender" onChange={(e) => setGender(e.target.value)} className="w-full p-3 text-md border border-silver rounded" >
                                                     <option value="male">Male</option>
@@ -214,8 +176,8 @@ const Auth = (props) => {
                                                     type="email"
                                                     placeholder="Enter your email"
                                                     onChange={(e) => setMail(e.target.value)}
-                                                /></div></>
-                                    }
+                                                /></div>
+                                    
                                     <div><label className="font-semibold  leading-8">{auth === 0 ? "Mobile:" : "Username:"}<font color="red">*</font></label>
                                         <input
                                             className="w-full p-3 text-md border border-silver rounded"
@@ -224,16 +186,7 @@ const Auth = (props) => {
                                             required
                                             onChange={(e) => setPhone(e.target.value)}
                                         /></div>
-                                    {handle == "bank" &&
-                                        <div>
-                                            <label className="font-semibold  leading-8">Email:</label><font color="red">*</font>
-                                            <input
-                                                className="w-full p-3 text-md border border-silver rounded"
-                                                type="email"
-                                                required
-                                                onChange={(e) => setBankMail(e.target.value)}
-                                            /></div>
-                                    }
+                                
                                     <div>
                                         <label className="font-semibold  leading-8">Password:</label><font color="red">*</font>
                                         <input
@@ -244,13 +197,13 @@ const Auth = (props) => {
                                             onChange={(e) => setPassword(e.target.value)}
                                         />
                                     </div>
-                                </div>
+                            
 
-                            </fieldset>
+                            
                                 <br />
                                 <fieldset className="border border-solid border-gray-300 px-7 py-5 pb-7">
                                     <legend className="text-2xl font-bold">
-                                        &nbsp;{handle === "bank" && "Blood Bank "}Address&nbsp;
+                                        &nbsp;{handle === "Blood Bank "}Address&nbsp;
                                     </legend>
 
                                     <div className="grid grid-cols-2 gap-4">
@@ -263,25 +216,19 @@ const Auth = (props) => {
                                             </select>
                                         </div>
 
-                                        <div><label for="district" className="font-semibold  leading-8">District:<font color="red">*</font></label>
-                                            <select name="district" id="district" onChange={(e) => setDistrict(e.target.value)} className="w-full p-3 text-md border border-silver rounded">
-                                                {
-                                                    data.states[state].districts.map((e, i) => <option value={i}>{e}</option>)
-                                                }
-                                            </select></div>
                                         <div className="col-span-2"><label className="font-semibold  leading-8">Address:<font color="red">*</font></label>
                                             <input
                                                 className="w-full p-3 text-md border border-silver rounded"
                                                 type="text"
-                                                placeholder="Enter your complete address"
+                                                placeholder="Enter your address"
                                                 onChange={(e) => setAddress(e.target.value)}
                                                 required
                                             /></div>
                                     </div>
 
-                                    {handle == "bank" &&
-                                        <>
-                                            <br />
+                                    { 
+                                    
+                                <>
                                             <div>
                                                 <label className="font-semibold leading-7">Location:<font color="red">*</font></label></div>
                                             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "1rem" }}>
@@ -335,12 +282,12 @@ const Auth = (props) => {
                                             required
                                             onChange={(e) => setPassword(e.target.value)}
                                         />
-                                    </div></>}
+                                    </div></>
                             <br />
                             <center><input
                                 type="submit"
                                 className={s1 + (auth === 0 && " w-4/12")}
-                                disabled={handle == "bank" && auth == 0 && longitude == 0}
+                                disabled={auth == 0 && longitude == 0}
                                 value={auth === 0 ? "Sign Up" : "Log In"}
                             /></center>
                         </fieldset>
