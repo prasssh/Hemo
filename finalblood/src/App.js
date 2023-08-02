@@ -16,16 +16,14 @@ export default function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navbar logIn={loggedIn} user={loggedIn && user.latitude ? "bank" : "user"} />}>
+          <Route path="/" element={<Navbar logIn={loggedIn} user={loggedIn } />}>
             <Route index element={<Home />} />
             {!loggedIn && <>
               <Route path="/:type/:handle" element={<Auth logIn={loggedIn} />} />
             </>}
-            loggedIn && (user.hospital 
-              <Route path="/user/:handle?" element={<div><User /></div>} />)
+            loggedIn && 
             <Route path="about" element={<About />} />
             <Route path="aboutBloodDonation" element={<AboutDonation />} />
-            <Route path="Event" element={<Events />} />
 
             <Route path="*" element={<div>404</div>} />
           </Route>

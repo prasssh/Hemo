@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import logo from "../../assest/logo.png";
+import logo from "../../assets/logo.png";
 import { Outlet, Link } from "react-router-dom";
 import DropDown from "../Util/DropDown";
 import axios from "../Api"
@@ -8,20 +8,10 @@ import AuthContext from "../context/AuthContext";
 const Navbar = (props) => {
     const s1 =
         "bg-white-900 drop-shadow-lg mx-3 px-7 py-2 rounded-md text-base font-medium hover:drop-shadow-xl hover:px-10 dark:hover:bg-midnight dark:hover:drop-shadow-dark-lg";
-    const [theme, setTheme] = useState(0);
+
     const { getLoggedIn } = useContext(AuthContext);
     const doc = document.documentElement.classList;
-    useEffect((e) => {
-        let t = localStorage.getItem("theme");
-        if (!t) {
-            localStorage.setItem("theme", 0);
-        }
-        t = localStorage.getItem("theme");
-        setTheme(t);
-        if (t == 1) {
-            doc.add("dark");
-        }
-    }, []);
+   
     return (
         <>
             <nav className="p-3 bg-white-900 sticky top-0 z-10 dark:bg-gray-bg">
@@ -29,19 +19,19 @@ const Navbar = (props) => {
                     <Link to="/">
                         <div className="flex items-center justify-between">
                             <img
-                                className="h-14 w-auto ml-6"
+                                className="h-20 w-auto ml-6"
                                 src={logo}
                                 draggable={false}
-                                alt="Your Company"
+                                alt=""
                             />
-                            <div className="text-2xl font-bold ml-2 text-blood">
-                                HemoSys
+                            <div className="text-2xl font-bold ml-2 text-black">
+                                Blood Management System
                             </div>
                         </div>
                     </Link>
                     <div className="flex items-center justify-between">
                         <>
-                            <DropDown title="More" children={["Home", "About HemoSys"]} links={["/", "/about"]}></DropDown>
+                            <DropDown title="More" children={["Home", "About HemoSys", "Contact Us"]} links={["/", "/about", "/contactUs"]}></DropDown>
                             {props.logIn ? (
                                 <>
                                     <Link
@@ -63,31 +53,12 @@ const Navbar = (props) => {
                                 </>
                             ) : (
                                 <>
-                                    <DropDown title="Receive Blood" children={[" Login/Register"]} links={["/register/patient"]}></DropDown>
-                                    <DropDown title="Donate Blood" children={["Donor Login/Register", "About Blood Donation"]} links={["/register/donor", "/aboutBloodDonation"]}></DropDown>
-                    
+                                    <DropDown title="Receive Blood" children={["Receiver Login/Register", "Blood Bank Directory"]} links={["/register/patient", "/bloodDirect"]}></DropDown>
+                                    <DropDown title="Donate Blood" children={["Donor Login/Register", "Blood Donation Camps", "About Blood Donation"]} links={["/register/donor", "/bloodCamps", "/aboutBloodDonation"]}></DropDown>
+                                    <DropDown title="Login" children={["Login"]} links={["/login/bank", "/register/bank"]}></DropDown>
                                 </>
                             )}
-                            <button
-                                className="mx-2 px-3 py-2 rounded-full hover:shadow-lg"
-                                onClick={() => {
-                                    localStorage.setItem(
-                                        "theme",
-                                        localStorage.getItem("theme") == 1 ? 0 : 1
-                                    );
-                                    setTheme(localStorage.getItem("theme"));
-                                    if (theme == 0) {
-                                        doc.add("dark");
-                                    } else {
-                                        doc.remove("dark");
-                                    }
-                                }}
-                            >
-                                <i
-                                    className={`dark:text-white-900 fa-solid fa-lg fa-${theme == 0 ? "sun" : "moon"
-                                        }`}
-                                ></i>
-                            </button>
+                          
                         </>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import data from "../../assets/data.json";
 import AuthContext from "../context/AuthContext";
 import axios from "../Api";
 import mapboxgl from "mapbox-gl";
@@ -11,6 +12,10 @@ const Auth = (props) => {
 
     const { type, handle } = useParams();
     const [name, setName] = useState("");
+    const [hospital, setHospital] = useState("");
+    const [contactPerson, setContactPerson] = useState("");
+    const [website, setWebsite] = useState("");
+    const [category, setCategory] = useState("Private");
     const [age, setAge] = useState(0);
     const [gender, setGender] = useState("male");
     const [mail, setMail] = useState("");
@@ -22,7 +27,7 @@ const Auth = (props) => {
     const [latitude, setLatitude] = useState(0);
     const [longitude, setLongitude] = useState(0);
     const { getLoggedIn } = useContext(AuthContext);
-    const [formData, setFormData] = useState({});
+
     const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
     const navigate = useNavigate();
     const s1 = "mx-2 px-9 py-2 font-semibold rounded-full shadow-sm text-white-900 bg-blood hover:drop-shadow-md hover:opacity-80 cursor-pointer";
@@ -43,6 +48,25 @@ const Auth = (props) => {
 
     const signUp = async (e) => {
         e.preventDefault();
+        var formData;
+        if (handle == "bank") {
+            formData = {
+                name: name,
+                hospital: hospital,
+                contactPerson: contactPerson,
+                category: category,
+                website: website,
+                phone: phone,
+                email: bankmail,
+                password: password,
+                state: data.states[state].state,
+                district: data.states[state].districts[district],
+                address: address,
+                latitude: latitude,
+                longitude: longitude,
+                stock: { 'A+': 0, 'A-': 0, 'B+': 0, 'B-': 0, 'AB+': 0, 'AB-': 0, 'O+': 0, 'O-': 0 }
+            };
+        } else {
             formData = {
                 name: name,
                 age: age,
@@ -51,13 +75,15 @@ const Auth = (props) => {
                 email: mail,
                 password: password,
                 phone: phone,
+                state: data.states[state].state,
+                district: data.states[state].districts[district],
                 address: address,
             };
-        
+        }
 
         await axios.post(`/auth/${handle}`, formData, { withCredentials: true }).then(async (res) => { }, (err) => alert(err.response.data.errorMessage));
         await getLoggedIn();
-        navigate(`/${handle == "user" ? handle : "user"}/profile`)
+        navigate(`/${handle == "bank" ? handle : "user"}/profile`)
     };
 
     const logIn = async (e) => {
@@ -67,9 +93,9 @@ const Auth = (props) => {
                 phone: phone,
                 password: password,
             };
-            await axios.post(`/auth/login/{handle}`, formData, { withCredentials: true }).then(async (res) => { });
+            await axios.post(`/auth/login/${handle}`, formData, { withCredentials: true }).then(async (res) => { });
             await getLoggedIn();
-            navigate(`/${handle == "user" ? handle : "user"}/profile`)
+            navigate(`/${handle == "bank" ? handle : "user"}/profile`)
         } catch (err) {
             alert(err.response.data.errorMessage);
         }
@@ -100,9 +126,9 @@ const Auth = (props) => {
                         action=""
                         onSubmit={auth === 0 ? signUp : logIn}
                     >
-                        <fieldset className="border border-solid border-gray-300 px-12 py-5">
+                        < className= "border border-solid border-gray-300 px-12 py-5">
                             <legend className={`text-2xl font-bold mb-1 ${auth === 1 && "text-center"}`}>
-                                &nbsp;{(handle === "donor" ? "Donor" : "Patient")} {(auth === 0 ? "Sign Up" : "Log In")}&nbsp;
+                                &nbsp;{handle === "bank" ? (auth === 1 ? "Blood Bank Log In" : "Add Your Bloodbank") : (handle === "donor" ? "Donor" : "Patient")} {handle !== "bank" && (auth === 0 ? "Sign Up" : "Log In")}&nbsp;
                             </legend>
                             <legend align="right">
                                 <input type="button" formAction=""
@@ -111,28 +137,26 @@ const Auth = (props) => {
                             </legend>
                             <p></p>
                             {auth === 0 ? <><fieldset className="border border-solid border-gray-300 px-7 py-5 pb-7">
-                              
+                                <legend className="text-2xl font-bold">
+                                    &nbsp;{handle === "bank" ? "Blood Bank" : "User"} Details&nbsp;
+                                </legend>
 
                                 <div className="grid grid-cols-3 gap-4">
                                     <div className="col-span-2"><label className="font-semibold leading-8">{handle === "bank" && "Blood Bank "}Name:<font color="red">*</font></label>
                                         <input
                                             className="w-full p-3 text-md border border-silver rounded"
                                             type="text"
-                                            placeholder={handle !== "Enter your full name"}
+                                            placeholder={handle !== "bank" && "Enter your full name"}
                                             required
                                             onChange={(e) => setName(e.target.value)}
                                         /></div>
                                     
-                                 
+                                                
+                                                  
+                                          
                                     
-                                        <><div><label className="font-semibold  leading-8">Age:<font color="red">*</font></label>
-                                            <input
-                                                className="w-full p-3 text-md border border-silver rounded"
-                                                type="number"
-                                                placeholder="Enter your age"
-                                                required
-                                                onChange={(e) => setAge(e.target.value)}
-                                            /></div>
+                                    
+                                            </div>
                                             <div><label for="gender" className="font-semibold  leading-8">Gender:<font color="red">*</font></label>
                                                 <select name="gender" id="gender" onChange={(e) => setGender(e.target.value)} className="w-full p-3 text-md border border-silver rounded" >
                                                     <option value="male">Male</option>
@@ -140,58 +164,71 @@ const Auth = (props) => {
                                                 </select></div>
                                             <div>
                                                 <label for="blood" className="font-semibold  leading-8">Blood Group:<font color="red">*</font></label>
-                                                <select name="blood" id="address" onChange={(e) => setBlood(e.target.value)} className="w-full p-3 text-md border border-silver rounded">
+                                                <select name="blood" id="state" onChange={(e) => setBlood(e.target.value)} className="w-full p-3 text-md border border-silver rounded">
                                                     {
                                                         bloodGroups.map((e, i) => <option value={i}>{e}</option>)
                                                     }
                                                 </select>
-                                            </div>
-                                            <div> <label className="font-semibold  leading-8">Email:</label>
+                                            </div><div>
+                                                <label className="font-semibold  leading-8">Email:</label>
                                                 <input
                                                     className="w-full p-3 text-md border border-silver rounded"
                                                     type="email"
                                                     placeholder="Enter your email"
                                                     onChange={(e) => setMail(e.target.value)}
-                                                /></div></>
+                                                /></div>
                                     
                                     <div><label className="font-semibold  leading-8">{auth === 0 ? "Mobile:" : "Username:"}<font color="red">*</font></label>
                                         <input
                                             className="w-full p-3 text-md border border-silver rounded"
                                             type="number"
-                                            placeholder={handle !=="Enter your mobile"}
+                                            placeholder={handle !== "bank" && "Enter your mobile"}
                                             required
                                             onChange={(e) => setPhone(e.target.value)}
                                         /></div>
-   
+                                
                                     <div>
                                         <label className="font-semibold  leading-8">Password:</label><font color="red">*</font>
                                         <input
                                             className="w-full p-3 text-md border border-silver rounded"
                                             type="password"
-                                            placeholder={handle !== "Enter your password"}
+                                            placeholder={handle !== "bank" && "Enter your password"}
                                             required
                                             onChange={(e) => setPassword(e.target.value)}
                                         />
                                     </div>
-                                </div>
+                            
 
-                          
+                            
+                                <br />
+                                <fieldset className="border border-solid border-gray-300 px-7 py-5 pb-7">
+                                    <legend className="text-2xl font-bold">
+                                        &nbsp;{handle === "Blood Bank "}Address&nbsp;
+                                    </legend>
 
-                                
-                                          
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label for="state" className="font-semibold  leading-8">State:<font color="red">*</font></label>
+                                            <select name="state" id="state" onChange={(e) => { setState(e.target.value); setDistrict(0); }} className="w-full p-3 text-md border border-silver rounded">
+                                                {
+                                                    data.states.map((e, i) => <option value={i}>{e.state}</option>)
+                                                }
+                                            </select>
+                                        </div>
+
                                         <div className="col-span-2"><label className="font-semibold  leading-8">Address:<font color="red">*</font></label>
                                             <input
                                                 className="w-full p-3 text-md border border-silver rounded"
                                                 type="text"
-                                                placeholder="Enter your complete address"
+                                                placeholder="Enter your address"
                                                 onChange={(e) => setAddress(e.target.value)}
                                                 required
                                             /></div>
-                                    
+                                    </div>
 
-                                    {
-                                        <>
-                                            <br />
+                                    { 
+                                    
+                                <>
                                             <div>
                                                 <label className="font-semibold leading-7">Location:<font color="red">*</font></label></div>
                                             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "1rem" }}>
@@ -245,7 +282,7 @@ const Auth = (props) => {
                                             required
                                             onChange={(e) => setPassword(e.target.value)}
                                         />
-                                    </div></>}
+                                    </div></>
                             <br />
                             <center><input
                                 type="submit"

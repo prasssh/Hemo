@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
+import data from "../../assets/data.json";
 import axios from "../Api";
 import AuthContext from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -11,14 +12,15 @@ const UserForm = () => {
     const [name, setName] = useState("");
     const [units, setUnits] = useState(0);
     const [desc, setDesc] = useState("");
+
     const [blood, setBlood] = useState(0);
     const [age, setAge] = useState(0);
     const [gender, setGender] = useState("male");
-    const [me, setMe] = useState(false);
+   
     const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
     useEffect(() => {
         if (handle == "donate") {
-            setMe(true);
+            setName(true);
         }
     }, []);
     useEffect(() => {
@@ -63,7 +65,7 @@ const UserForm = () => {
             <form
                 className="space-y-7"
                 action=""
-                onSubmit={(e) => handle == "donate" ? donate() : request() }
+                onSubmit={(e) => { e.preventDefault(); if (bank == "") { alert("Select a blood bank"); return; } handle == "donate" ? donate() : request(); }}
             >
                 <fieldset className="border border-solid border-gray-300 p-3">
                     <legend class="text-2xl font-bold">
@@ -77,11 +79,11 @@ const UserForm = () => {
                     <table className="w-full" cellPadding={10}>
                         <tr>
                             <td>
-                                <label className="font-semibold leading-8">{handle == "request"}Name:<font color="red">*</font></label>
+                                <label className="font-semibold leading-8">{handle == "request" && "Patient "}Name:<font color="red">*</font></label>
                                 <input
                                     className="w-full p-3 text-md border border-silver rounded"
                                     type="text"
-                                    placeholder= "Enter your full name"
+                                    placeholder="Enter your full name"
                                     required
                                     value={name}
                                     disabled={me || handle == "donate"}
@@ -106,7 +108,7 @@ const UserForm = () => {
                                 <input
                                     className="w-full p-3 text-md border border-silver rounded"
                                     type="number"
-                                    placeholder="Enter age"
+                                    placeholder="Enter your age"
                                     required
                                     value={age}
                                     min={1}
@@ -142,6 +144,7 @@ const UserForm = () => {
                                     onChange={(e) => setDesc(e.target.value.trim())}
                                 />
                             </td></tr>
+                     
                     </table>
                     <button
                         type="submit"
