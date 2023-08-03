@@ -7,7 +7,7 @@ import g4 from "../../assest/donation/g4.jpg"
 const AboutDonation = () => {
     const data = [
         { title: "Registration", img: g1 },
-        { title: "Seeing", img: g2 },
+        { title: "Examine", img: g2 },
         { title: "Donation", img: g3 },
         { title: "Save Life", img: g4 },
     ]
@@ -18,13 +18,13 @@ const AboutDonation = () => {
                     <h2 className='text-3xl font-bold'>Donation Process</h2>
                     <code>The donation process from the time you arrive center until the time you leave</code><br /><br />
                 </div>
-                <div className='grid grid-cols-4 place-items-center'>
+                <div className='grid grid-cols-2 place-items-center'>
                     {data.map((e, i) =>
-                        <div className='border-metal shadow-md rounded-lg overflow-hidden max-w-[90%] select-none'>
+                        <div className='border-metal shadow-md bg-white-900 rounded-lg overflow-hidden max-w-[90%] select-none'>
                             <img src={e.img} draggable={false} width="100%" alt="" />
-                            <div className='m-4'>
+                            <div className='m-10'>
                                 <h1 className='font-bold text-lg text-midnight'>{i + 1} - {e.title}</h1>
-                                <p className='text-justify'>Lorem ipsum dolor, sit amet consectetur qwey adipisicing elit. Doloribus, as aliquam corporis dolorem consectetur qui libero, veritatis, nihil alias repellat quam architecto nobis laudantium ipsum nemo nesciunt quisquam est odit ad?</p>
+                                <p className='text-justify'>Lorem </p>
                             </div>
                         </div>
                     )}

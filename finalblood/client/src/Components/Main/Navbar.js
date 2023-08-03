@@ -29,17 +29,17 @@ const Navbar = (props) => {
                     <Link to="/">
                         <div className="flex items-center justify-between">
                             <img
-                                className="h-14 w-auto ml-6"
+                                className="h-20 w-auto ml-1"
                                 src={logo}
                                 draggable={false}
-                                alt="Your Company"
+                                alt=""
                             />
-                            <div className="text-2xl font-bold ml-2 text-blood">
+                            <div className="text-3xl font-bold ml-2 text-blood">
                                 HemoSys
                             </div>
                         </div>
                     </Link>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-left justify-between">
                         <>
                             <DropDown title="More" children={["Home", "About HemoSys"]} links={["/", "/about"]}></DropDown>
                             {props.logIn ? (
@@ -68,26 +68,7 @@ const Navbar = (props) => {
                     
                                 </>
                             )}
-                            <button
-                                className="mx-2 px-3 py-2 rounded-full hover:shadow-lg"
-                                onClick={() => {
-                                    localStorage.setItem(
-                                        "theme",
-                                        localStorage.getItem("theme") == 1 ? 0 : 1
-                                    );
-                                    setTheme(localStorage.getItem("theme"));
-                                    if (theme == 0) {
-                                        doc.add("dark");
-                                    } else {
-                                        doc.remove("dark");
-                                    }
-                                }}
-                            >
-                                <i
-                                    className={`dark:text-white-900 fa-solid fa-lg fa-${theme == 0 ? "sun" : "moon"
-                                        }`}
-                                ></i>
-                            </button>
+                       
                         </>
                     </div>
                 </div>
